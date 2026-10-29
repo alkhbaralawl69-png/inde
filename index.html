@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>تجربة توعوية</title>
+<style>
+:root{--bg1:#cfe0ee;--bg2:#e8b25a;--card:#f3e6bd;--text:#3b2a14;--btn:#6b8e23;--btn2:#8a6a3d;--cash:#d9822b;--cell:#d8c593;--act:#f4e7b8;--safe:#8fc46a;--trap:#d9534f;--head:#5a4326}
+*{box-sizing:border-box;font-family:Tahoma,Arial,sans-serif}
+body{margin:0;background:linear-gradient(var(--bg1),var(--bg2));min-height:100vh;padding:12px;color:var(--text);display:flex;justify-content:center}
+body.dark{background:#1c1c1c;color:#eee}
+body.adm{padding-bottom:78px}
+.w{width:100%;max-width:480px}
+h1{text-align:center;margin:4px 0 10px;font-size:23px;text-shadow:0 1px 0 #fff8}
+.fixed{background:#222;color:#ffd54f;border-radius:8px;padding:6px;font-size:12px;text-align:center;margin-bottom:8px}
+.warn{background:linear-gradient(#9b2a2a,#6f1717);color:#fff;border-radius:12px;padding:12px;font-size:15px;margin-bottom:8px;line-height:1.8;font-weight:bold;box-shadow:0 2px 6px #0004}
+.official{background:#fff3cd;color:#3b2a14;border:2px solid #c9a24b;border-radius:12px;padding:10px;font-size:13px;margin-bottom:8px;line-height:1.8}
+.banner{background:var(--head);color:#fff;border-radius:10px;padding:10px;margin-bottom:8px;text-align:center}
+.tip{background:#e3f2fd;color:#0d3c61;border-radius:10px;padding:9px;margin-bottom:10px;text-align:center;font-size:14px;line-height:1.7}
+.card{background:var(--card);border-radius:14px;padding:12px;margin-bottom:10px;box-shadow:0 2px 6px #0003}
+input,button,select,textarea{font-size:16px;padding:11px;border-radius:10px;border:1px solid #7a6340}
+input,textarea{width:100%;margin-bottom:8px}
+textarea{min-height:84px}
+button{border:0;background:var(--btn);color:#fff;font-weight:bold;cursor:pointer}
+button.g{background:var(--btn2)}button.o{background:var(--cash)}button.r{background:#a33}button.b{background:#456}button.y{background:#b8860b}
+button:disabled{opacity:.45}
+.row{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.mult{width:64px;text-align:center;font-weight:bold;font-size:14px}
+.cell{flex:1;height:48px;background:var(--cell);border:2px solid #7a6340;color:#000;font-size:22px;border-radius:12px}
+.cell.act{background:var(--act);box-shadow:0 0 10px #c9a24b}
+.cell.safe{background:var(--safe)}.cell.trap{background:var(--trap)}
+.balbox{background:linear-gradient(#3b3b3b,#222);color:#fff;border-radius:14px;padding:12px;text-align:center;margin-bottom:10px}
+.balbox .big{font-size:30px;font-weight:bold;color:#ffd54f}
+.balbox .sm{font-size:12px;opacity:.85}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:10px}
+.sbox{background:var(--card);border-radius:12px;padding:8px;text-align:center;font-size:12px;box-shadow:0 1px 4px #0003}
+.sbox b{display:block;font-size:17px}
+.msgbox{text-align:center;background:var(--head);color:#fff;border-radius:12px;padding:12px;margin-bottom:10px;line-height:1.7}
+.chips{display:flex;gap:6px;margin-bottom:8px}.chips button{flex:1;padding:7px;font-size:13px;background:var(--btn2)}
+.hide{display:none!important}
+.modal{position:fixed;inset:0;background:#000b;display:flex;align-items:center;justify-content:center;padding:20px;z-index:9}
+.mbox{background:#fff;color:#222;border-radius:16px;padding:18px;max-width:420px;width:100%;text-align:center;line-height:1.9;font-size:16px}
+.mbox button{margin-top:12px;width:100%}
+/* لوحة المشرف */
+.dark .card{background:#2b2b2b;color:#eee;box-shadow:none}
+.dark input,.dark textarea{background:#fff;color:#000}
+.stat{background:#333;border-radius:12px;padding:10px;text-align:center;font-size:12px}
+.stat b{display:block;font-size:18px;color:#ffd54f;margin-top:2px}
+.nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:#111;border-top:1px solid #444;z-index:5}
+.nav button{flex:1;background:none;color:#aaa;font-size:11px;padding:9px 2px;border-radius:0}
+.nav button.on{color:#ffd54f;background:#222}
+.nav button span{display:block;font-size:19px}
+.found{background:#14532d;color:#d1fae5;border-radius:10px;padding:8px;text-align:center;margin-bottom:8px;font-weight:bold}
+.nf{background:#7f1d1d;color:#fee2e2;border-radius:10px;padding:10px;text-align:center}
+.idbig{font-size:22px;font-weight:bold;color:#ffd54f;text-align:center;letter-spacing:2px}
+.line{font-size:13px;line-height:2;border-bottom:1px solid #444;padding:2px 0}
+.acc{border:1px solid #555;border-radius:12px;padding:10px;margin-bottom:8px;font-size:13px;line-height:1.9}
+.acc .id{font-size:16px;font-weight:bold;color:#ffd54f}
+label{display:block;font-size:13px;margin:8px 0 3px}
+.hint{font-size:12px;color:#bbb;line-height:1.8;margin-bottom:8px}
+.cl{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.cl input{width:60px;height:38px;margin:0;padding:2px}
+.sec{font-weight:bold;color:#ffd54f;margin:10px 0 6px}
+</style></head>
+<body><div class="w">
+
+<!-- ================= اللعبة ================= -->
+<div id="gameApp">
+  <h1 data-t="title"></h1>
+  <div class="fixed">🔒 تجربة توعوية: الرصيد وهمي بالكامل ولا توجد أموال حقيقية.</div>
+  <div class="warn" data-t="warn"></div>
+  <div class="official" data-t="official"></div>
+  <div class="banner hide" id="banner" data-t="banner"></div>
+  <div class="tip hide" id="tip"></div>
+
+  <div id="auth" class="card hide">
+    <input id="u" placeholder="اسم المستخدم (حروف إنجليزي أو أرقام)" autocomplete="username">
+    <input id="p" type="password" placeholder="كلمة السر (6 أحرف على الأقل)">
+    <div class="row"><button id="bl" style="flex:1" data-t="btnLogin"></button><button id="br" class="g" style="flex:1" data-t="btnReg"></button></div>
+    <div id="aerr" style="color:#a00;font-weight:bold"></div>
+  </div>
+
+  <div id="game" class="hide">
+    <div class="balbox">
+      <div class="sm">الرصيد (وهمي)</div>
+      <div class="big" id="bal"></div>
+      <div class="sm" id="who"></div>
+    </div>
+    <div class="grid3">
+      <div class="sbox"><b id="s1">0</b>جولات</div>
+      <div class="sbox"><b id="s2">0</b>كسب</div>
+      <div class="sbox"><b id="s3">0</b>خسر</div>
+    </div>
+    <div class="grid2">
+      <div class="sbox"><b id="s4">0</b>إجمالي ما راهنت به</div>
+      <div class="sbox"><b id="s5">0</b>خسارتك الصافية</div>
+    </div>
+    <div class="msgbox" id="msg"></div>
+    <div class="row"><button id="m2" style="flex:1">2x</button><button id="m3" class="g" style="flex:1">3x</button></div>
+    <div class="card" id="board"></div>
+    <div class="chips"><button data-b="100">100</button><button data-b="1000">1,000</button><button data-b="10000">10,000</button><button data-b="100000">100,000</button></div>
+    <div class="row">
+      <input id="bet" type="number" min="1" style="margin:0;width:110px">
+      <button id="start" style="flex:1" data-t="btnStart"></button>
+      <button id="cash" class="o" style="flex:1" disabled></button>
+    </div>
+    <button class="g" id="out" style="width:100%" data-t="btnOut"></button>
+  </div>
+</div>
+
+<!-- ================= لوحة التحكم ================= -->
+<div id="adminApp" class="hide">
+  <div id="alogin" class="card"><b>🔐 لوحة المشرف</b><br><br>
+    <input id="pin" type="password" placeholder="الرقم السري">
+    <button id="go" style="width:100%">دخول</button>
+    <div id="err" style="color:#f88;margin-top:6px"></div>
+  </div>
+
+  <div id="apanel" class="hide">
+    <div id="p1"></div>
+
+    <div id="p2" class="hide">
+      <div class="card">
+        <b>🔎 البحث برقم الحساب</b>
+        <input id="cid" inputmode="numeric" maxlength="9" placeholder="اكتب الرقم (9 أرقام)" style="margin-top:8px">
+        <div id="cidmsg" class="hint"></div>
+      </div>
+      <div id="accbox"></div>
+    </div>
+
+    <div id="p3" class="hide">
+      <div class="card">
+        <input id="q" placeholder="ابحث بالرقم أو الاسم">
+        <div id="list"></div>
+      </div>
+    </div>
+
+    <div id="p4" class="hide"><div class="card"><b>📜 سجل الشحن والسحب</b><div id="txlist" style="margin-top:8px"></div></div></div>
+    <div id="p5" class="hide"><div class="card" id="f5"></div></div>
+    <div id="p6" class="hide"><div class="card" id="f6"></div></div>
+
+    <div class="nav">
+      <button data-p="p1" class="on"><span>🏠</span>الرئيسية</button>
+      <button data-p="p2"><span>🔎</span>حساب</button>
+      <button data-p="p3"><span>👥</span>الحسابات</button>
+      <button data-p="p4"><span>📜</span>العمليات</button>
+      <button data-p="p5"><span>💬</span>الرسائل</button>
+      <button data-p="p6"><span>⚙️</span>الإعدادات</button>
+    </div>
+  </div>
+</div>
+
+</div>
+<div id="modal" class="modal hide"><div class="mbox"><div id="mtext"></div><button id="mok">حسنًا</button></div></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script>
+const ADMIN_PIN="jMDENXh0E_TP71";
+firebase.initializeApp({
+  apiKey:"AIzaSyC0WWJQgh4lEYbOqfKFMcI1vLgwJS5DwCQ",
+  authDomain:"xtra-f3087.firebaseapp.com",
+  databaseURL:"https://xtra-f3087-default-rtdb.firebaseio.com",
+  projectId:"xtra-f3087",
+  storageBucket:"xtra-f3087.firebasestorage.app",
+  messagingSenderId:"122881932496",
+  appId:"1:122881932496:web:cf63664e63e38176d332d5"
+});
+const DB=firebase.database();
+const $=id=>document.getElementById(id);
+const f=n=>Number(n).toLocaleString("en",{maximumFractionDigits:2});
+const r2=n=>Math.round(n*100)/100;
+const fdate=t=>t?new Date(t).toLocaleString("ar-EG"):"—";
+const IS_ADMIN=location.search.includes("admin")||location.hash.includes("admin");
+const rnd=()=>crypto.getRandomValues(new Uint32Array(1))[0]/4294967296;
+const lines=s=>String(s||"").split("\n").map(x=>x.trim()).filter(Boolean);
+const rndLine=s=>{const a=lines(s);return a.length?a[Math.floor(rnd()*a.length)]:"";};
+
+let ref=null,U=null,name=null,mode=2,lastLoss=null,prev=-1,ti=0;
+const ROWS=6, SESS="ws_sess";
+
+/* ---------- الإعدادات الافتراضية ---------- */
+const DEF={
+  texts:{
+    title:"سلّم الغرب - تجربة توعوية",
+    warn:"⚠️ المراهنات خطأ وخطر حقيقي على الفرد والمجتمع. لا تراهن أبدًا.",
+    official:"📢 تنبيه رسمي: هذه تجربة توعوية. الألعاب هنا مضبوطة لصالح المنصة كما في منصات المراهنات الحقيقية، والرصيد وهمي بالكامل ولا توجد أي أموال حقيقية. نخزّن اسم المستخدم وكلمة سر مشفّرة ونتائجك فقط.",
+    banner:"",
+    tips:"يا {name}، المنصات الحقيقية مصممة بحيث تخسر في النهاية\nالمكسب المؤقت جزء من الفخ\nكل جولة بتخسرها هنا بتحصل في الواقع بفلوس حقيقية",
+    msgStart:"اختار الصعوبة وحط رهانك",
+    msgFirst:"اختار خانة في الصف الأول",
+    msgNext:"كمّل أو اسحب",
+    msgLost:"وقعت في فخ! المراهنة خسارة في النهاية\nخسرت يا {name}، وده اللي بيحصل مع كل اللاعبين",
+    msgWin:"وصلت للآخر وسحبت",
+    msgCash:"سحبت",
+    noBal:"الرصيد مش كفاية. المشرف فقط يضيف رصيد",
+    closedMsg:"هذا الحساب مغلق",
+    regClosed:"التسجيل مغلق حاليًا",
+    popText:"بعد {rounds} جولات خسرت {losses} مرة، وصافي خسارتك {net}. المراهنات خطأ وخطر حقيقي.",
+    btnStart:"ابدأ", btnCash:"اسحب", btnLogin:"دخول", btnReg:"حساب جديد", btnOut:"خروج"
+  },
+  colors:{bg1:"#cfe0ee",bg2:"#e8b25a",card:"#f3e6bd",text:"#3b2a14",btn:"#6b8e23",btn2:"#8a6a3d",cash:"#d9822b",cell:"#d8c593",act:"#f4e7b8",safe:"#8fc46a",trap:"#d9534f",head:"#5a4326"},
+  initial:100000, newZero:false, registration:true, minBet:1, defBet:1000, rtp:96, popEvery:5
+};
+const TLABEL={title:"عنوان اللعبة",warn:"التحذير الأحمر (أعلى الشاشة)",official:"التنبيه الرسمي",banner:"إعلان أعلى الشاشة (فاضي = مخفي)",tips:"نصائح متغيرة (كل سطر نصيحة، بتتبدل كل 8 ثواني)",msgLost:"رسائل الخسارة (كل سطر رسالة، بيظهر واحد عشوائي)",popText:"نافذة التوعية الدورية",msgStart:"رسالة البداية",msgFirst:"رسالة أول صف",msgNext:"رسالة كمّل أو اسحب",msgWin:"رسالة الوصول للآخر",msgCash:"رسالة السحب",noBal:"رسالة الرصيد لا يكفي",closedMsg:"رسالة الحساب المغلق",regClosed:"رسالة التسجيل المغلق",btnStart:"زر ابدأ",btnCash:"زر اسحب",btnLogin:"زر دخول",btnReg:"زر حساب جديد",btnOut:"زر خروج"};
+const BIG=["warn","official","banner","tips","msgLost","popText"];
+const CLABEL={bg1:"خلفية (أعلى)",bg2:"خلفية (أسفل)",card:"لون البطاقات",text:"لون الكلام",btn:"لون الأزرار",btn2:"لون الأزرار الثانوية",cash:"لون زر السحب",cell:"لون الخانات",act:"لون الخانة النشطة",safe:"لون الخانة الآمنة",trap:"لون الفخ",head:"لون شريط الرسائل"};
+let CFG=JSON.parse(JSON.stringify(DEF));
+function merge(c){
+  c=c||{};
+  const t=Object.assign({},DEF.texts,c.texts||{});
+  ["warn","official"].forEach(k=>{if(!String(t[k]||"").trim())t[k]=DEF.texts[k];});
+  CFG={texts:t,colors:Object.assign({},DEF.colors,c.colors||{}),
+    initial:c.initial!=null?+c.initial:DEF.initial,newZero:c.newZero===true,
+    registration:c.registration!==false,
+    minBet:c.minBet!=null?+c.minBet:DEF.minBet,defBet:c.defBet!=null?+c.defBet:DEF.defBet,
+    rtp:c.rtp!=null?+c.rtp:DEF.rtp,popEvery:c.popEvery!=null?+c.popEvery:DEF.popEvery};
+}
+function tpl(s){
+  const u=U||{}, net=(u.returned||0)-(u.wagered||0);
+  return String(s||"").replace(/\{name\}/g,name||"صديقي").replace(/\{rounds\}/g,u.rounds||0)
+    .replace(/\{losses\}/g,u.losses||0).replace(/\{wins\}/g,u.wins||0).replace(/\{net\}/g,f(Math.abs(net)));
+}
+function applyCfg(){
+  for(const k in CFG.colors)document.documentElement.style.setProperty("--"+k,CFG.colors[k]);
+  document.querySelectorAll("[data-t]").forEach(e=>{e.textContent=tpl(CFG.texts[e.dataset.t]);});
+  $("banner").classList.toggle("hide",!CFG.texts.banner.trim());
+  document.title=CFG.texts.title||"تجربة توعوية";
+}
+const RTP=()=>Math.min(99,Math.max(1,CFG.rtp))/100;
+const mult=(m,k)=>r2(RTP()*Math.pow(m/(m-1),k));
+async function hash(s){
+  const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode("ws:"+s));
+  return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("");
+}
+async function newId(n){
+  for(let i=0;i<40;i++){
+    const id=String(100000000+Math.floor(rnd()*900000000));
+    const t=await DB.ref("ids/"+id).transaction(c=>c===null?n:undefined);
+    if(t.committed)return id;
+  }
+  throw new Error("id");
+}
+function modal(t){$("mtext").textContent=t;$("modal").classList.remove("hide");}
+$("mok").onclick=()=>$("modal").classList.add("hide");
+
+/* ================= اللعبة ================= */
+const show=n=>["auth","game"].forEach(x=>$(x).classList.toggle("hide",x!==n));
+function tipTick(){
+  const a=lines(CFG.texts.tips), el=$("tip");
+  if(!a.length){el.classList.add("hide");return;}
+  el.classList.remove("hide"); el.textContent="💡 "+tpl(a[ti%a.length]); ti++;
+}
+function attach(n){
+  name=n; ref=DB.ref("users/"+n); localStorage.setItem(SESS,n); prev=-1;
+  ref.on("value",s=>{
+    U=s.val();
+    if(!U||U.closed){logout(CFG.texts.closedMsg);return;}
+    show("game"); render();
+    if(prev>=0&&U.rounds>prev&&CFG.popEvery>0&&U.rounds%CFG.popEvery===0)modal(tpl(CFG.texts.popText));
+    prev=U.rounds;
+  });
+}
+function logout(t){
+  if(ref)ref.off(); ref=null;U=null;name=null;localStorage.removeItem(SESS);
+  show("auth"); $("aerr").textContent=t||""; applyCfg();
+}
+function draw(){
+  const g=U.game, m=g?g.mode:(lastLoss?lastLoss.mode:mode), b=$("board"); b.innerHTML="";
+  for(let r=ROWS-1;r>=0;r--){
+    const row=document.createElement("div"); row.className="row";
+    const ml=document.createElement("div"); ml.className="mult"; ml.textContent="×"+mult(m,r+1); row.appendChild(ml);
+    for(let c=0;c<m;c++){
+      const x=document.createElement("button"); x.className="cell"; x.disabled=true;
+      if(g){
+        if(r<g.level)x.classList.add("safe");
+        if(r===g.level){x.disabled=false;x.classList.add("act");x.onclick=()=>pick(c);}
+      }else if(lastLoss){
+        if(r<lastLoss.row)x.classList.add("safe");
+        if(r===lastLoss.row&&c===lastLoss.col){x.classList.add("trap");x.textContent="💣";}
+      }
+      row.appendChild(x);
+    }
+    b.appendChild(row);
+  }
+}
+function render(){
+  applyCfg();
+  $("bal").textContent=f(U.balance);
+  $("who").textContent=name+" • الرقم: "+(U.id||"—");
+  $("s1").textContent=U.rounds; $("s2").textContent=U.wins; $("s3").textContent=U.losses;
+  $("s4").textContent=f(U.wagered); $("s5").textContent=f(Math.max(0,U.wagered-U.returned));
+  const pl=!!U.game;
+  $("start").disabled=pl;$("bet").disabled=pl;$("m2").disabled=$("m3").disabled=pl;
+  const can=pl&&U.game.level>=1;
+  $("cash").disabled=!can;
+  $("cash").textContent=can?CFG.texts.btnCash+" "+f(U.game.bet*mult(U.game.mode,U.game.level)):CFG.texts.btnCash;
+  const cm=pl?U.game.mode:mode;
+  $("m2").className=cm===2?"":"g";$("m3").className=cm===3?"":"g";
+  if(!$("msg").textContent)$("msg").textContent=tpl(CFG.texts.msgStart);
+  draw(); tipTick(); ti--;
+}
+function settle(win,msg){
+  ref.update({game:null,last:Date.now(),rounds:U.rounds+1,wins:U.wins+(win>0?1:0),losses:U.losses+(win>0?0:1),
+    returned:r2(U.returned+win),balance:r2(U.balance+win)});
+  $("msg").textContent=msg;
+}
+function pick(c){
+  if(!U||!U.game)return;
+  const g=U.game, s=(U.surv!=null)?U.surv/100:(g.mode-1)/g.mode;
+  if(rnd()>=s){lastLoss={row:g.level,col:c,mode:g.mode};settle(0,tpl(rndLine(CFG.texts.msgLost)));return;}
+  const lvl=g.level+1;
+  if(lvl===ROWS){const w=r2(g.bet*mult(g.mode,lvl));lastLoss=null;settle(w,tpl(CFG.texts.msgWin)+" "+f(w));return;}
+  ref.child("game/level").set(lvl); $("msg").textContent=tpl(CFG.texts.msgNext);
+}
+function cash(){
+  if(!U||!U.game||U.game.level<1)return;
+  const w=r2(U.game.bet*mult(U.game.mode,U.game.level)); lastLoss=null; settle(w,tpl(CFG.texts.msgCash)+" "+f(w));
+}
+function start(){
+  const bet=r2(parseFloat($("bet").value));
+  if(!U||U.game)return;
+  if(!(bet>=CFG.minBet))return $("msg").textContent="الرهان "+CFG.minBet+" على الأقل";
+  if(bet>U.balance)return $("msg").textContent=tpl(CFG.texts.noBal);
+  lastLoss=null;
+  ref.update({balance:r2(U.balance-bet),wagered:r2(U.wagered+bet),last:Date.now(),game:{bet,mode,level:0}});
+  $("msg").textContent=tpl(CFG.texts.msgFirst);
+}
+async function auth(kind){
+  const n=$("u").value.trim().toLowerCase(), p=$("p").value, err=t=>$("aerr").textContent=t;
+  if(!/^[a-z0-9_]{3,20}$/.test(n))return err("الاسم 3-20 حرف إنجليزي أو أرقام أو _");
+  if(p.length<6)return err("كلمة السر 6 أحرف على الأقل");
+  const h=await hash(p), r=DB.ref("users/"+n), snap=await r.get();
+  if(kind==="register"){
+    if(!CFG.registration)return err(CFG.texts.regClosed);
+    if(snap.exists())return err("الاسم مستخدم");
+    let id; try{id=await newId(n);}catch(e){return err("حصلت مشكلة، جرّب تاني");}
+    const s0=CFG.newZero?0:CFG.initial;
+    await r.set({id,pw:h,balance:s0,regBonus:s0,rounds:0,wins:0,losses:0,wagered:0,returned:0,closed:false,created:Date.now(),last:0});
+  }else{
+    const u=snap.val();
+    if(!u||u.pw!==h)return err("بيانات غلط");
+    if(u.closed)return err(CFG.texts.closedMsg);
+  }
+  err(""); lastLoss=null; $("msg").textContent=""; attach(n);
+}
+
+/* ================= لوحة التحكم ================= */
+function adminApp(){
+  $("gameApp").classList.add("hide"); $("adminApp").classList.remove("hide"); document.body.classList.add("dark","adm");
+  let started=false, ALL={}, TX=[], curId="", panel=null, amtVal=""; const pending={};
+  const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;};
+  const btn=(par,txt,cls,fn)=>{const b=el("button",cls,txt);b.onclick=fn;par.appendChild(b);return b;};
+  const find=id=>Object.entries(ALL).find(([n,u])=>String(u.id)===String(id));
+  const go=p=>{
+    document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("on",x.dataset.p===p));
+    ["p1","p2","p3","p4","p5","p6"].forEach(t=>$(t).classList.toggle("hide",t!==p));
+  };
+
+  function fixIds(){
+    for(const [n,u] of Object.entries(ALL)){
+      if(!u.id&&!pending[n]){pending[n]=1;newId(n).then(id=>DB.ref("users/"+n).update({id}));}
+    }
+  }
+
+  /* --- الرئيسية --- */
+  function dash(){
+    const box=$("p1"); box.innerHTML="";
+    const list=Object.values(ALL); let W=0,R=0,B=0,op=0,cl=0,ch=0,wd=0;
+    list.forEach(u=>{W+=u.wagered||0;R+=u.returned||0;B+=u.balance||0;u.closed?cl++:op++;});
+    TX.forEach(x=>{x.
